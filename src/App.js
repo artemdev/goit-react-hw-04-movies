@@ -1,12 +1,11 @@
 import './App.css';
 import React from 'react';
 import { Route } from 'react-router-dom';
-import Navbar from './components/navbar'
-import Home from './components/home'
-import Movies from './components/movies'
+import Navbar from './components/navbar';
+import Home from './components/home';
+import Movies from './components/movies';
 
 export default function App() {
-
   return (
     <>
       <Route path="/" component={Navbar} />
