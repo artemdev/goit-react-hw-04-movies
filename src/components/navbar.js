@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom'
-export default function Navbar() {
+import { Link } from 'react-router-dom';
 
-    return (
-        <>
-            <Link to="/">Home</Link>
-            <Link to="/movies">Movies</Link>
-        </>
-    );
+export default function Navbar() {
+  return (
+    <header>
+      <Link to="/">Home</Link>
+      <Link to="/movies">Movies</Link>
+    </header>
+  );
 }
