@@ -47,10 +47,12 @@ export const getTrending = async () => {
   }
 };
 
-export const searchMovie = async q => {
+export const searchMovie = async query => {
   try {
-    const { data } = await axios.get(`/search/movies`, { query: q });
-    return data.hits;
+    const { data } = await axios.get(`/search/movie`, {
+      params: { query: query },
+    });
+    return data.results;
   } catch (error) {
     console.log('error', { error });
     return [];
