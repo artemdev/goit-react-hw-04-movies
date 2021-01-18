@@ -1,0 +1,19 @@
+header {
+  background-color: #f1ebe9;
+  display: flex;
+  padding: 10px 25px 10px 25px;
+  margin: 20px 0;
+  border-top: 2px white solid;
+  border-bottom: 2px white solid;
+}
+
+.navigation__link {
+  color: #151c25;
+  margin-right: 20px;
+  text-decoration: none;
+  font-size: 1.2em;
+  font-weight: 400;
+}
+a.navigation__linkActive:visited {
+  color: #ff3d00;
+}

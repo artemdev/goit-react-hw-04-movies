@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { useRouteMatch, Route, Link } from 'react-router-dom';
 import {
   getMovieDetails,
@@ -6,8 +6,10 @@ import {
   getMovieCredits,
 } from '../api/fetchMovies';
 import Navbar from './navbar';
-import Cast from './cast';
-import Reviews from './reviews';
+
+import movieStyles from '../styles/movie.module.css';
+const AsyncCast = lazy(() => import('./cast'));
+const AsyncReviews = lazy(() => import('./reviews'));
 
 export default function MovieDetailsPage({ history }) {
   const { url, params } = useRouteMatch();
@@ -37,58 +39,82 @@ export default function MovieDetailsPage({ history }) {
   return (
     <>
       <Navbar />
-      <button type="submit" onClick={goBack}>
-        {' '}
+
+      <button
+        className={movieStyles.goBackButton}
+        type="submit"
+        onClick={goBack}
+      >
         Go back
       </button>
-      <h1>{movie && `${movie.original_title} (${movie.release_date}) `}</h1>
 
-      <h2>
-        {movie &&
-          `Avarage vote (${movie.vote_average} from ${movie.vote_count} votes) `}
-      </h2>
-      <img
-        width="200"
-        src={
-          movie && 'https://image.tmdb.org/t/p/original/' + movie.poster_path
-        }
-        alt=""
-      />
-      <h2>Overview</h2>
+      <h1 className={movieStyles.title}>
+        {movie && `${movie.original_title} (${movie.release_date}) `}
+      </h1>
+      <section className={movieStyles.movieContainer}>
+        <img
+          className={movieStyles.cover}
+          width="200"
+          src={
+            movie && 'https://image.tmdb.org/t/p/original/' + movie.poster_path
+          }
+          alt=""
+        />
+        <section className={movieStyles.infoContainer}>
+          <h2 className={movieStyles.subTitle}>
+            {movie &&
+              `Avarage vote (${movie.vote_average} from ${movie.vote_count} votes) `}
+          </h2>
 
-      {movie && movie.overview}
-      <h2>Genres</h2>
+          <h2 className={movieStyles.subTitle}>Overview</h2>
+          <p className={movieStyles.description}>{movie && movie.overview}</p>
+          <h2 className={movieStyles.subTitle}>Genres</h2>
 
-      <ul>
-        {movie &&
-          movie.genres &&
-          movie.genres.map((genre, i) => <li key={i}>{genre.name}</li>)}
+          <ul className={movieStyles.genres}>
+            {movie &&
+              movie.genres &&
+              movie.genres.map((genre, i) => (
+                <li className={movieStyles.genresItem} key={i}>
+                  {genre.name}
+                </li>
+              ))}
+          </ul>
+        </section>
+      </section>
+
+      <ul className={movieStyles.bottomList}>
+        <li className={movieStyles.bottomItem}>
+          <Link
+            to={{
+              pathname: `${url}/cast`,
+              state: { from: '/movies' },
+            }}
+          >
+            Cast
+          </Link>
+        </li>
+        <li className={movieStyles.bottomItem}>
+          <Link
+            to={{
+              pathname: `${url}/reviews`,
+              state: { from: '/movies' },
+            }}
+          >
+            Reviews
+          </Link>
+        </li>
       </ul>
 
-      <Link
-        to={{
-          pathname: `${url}/cast`,
-          state: { from: '/movies' },
-        }}
-      >
-        Cast
-      </Link>
-
-      <Link
-        to={{
-          pathname: `${url}/reviews`,
-          state: { from: '/movies' },
-        }}
-      >
-        Reviews
-      </Link>
-
       <Route path="/movies/:movieId/cast" exact>
-        <Cast {...castProps} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <AsyncCast {...castProps} />
+        </Suspense>
       </Route>
 
       <Route path="/movies/:movieId/reviews" exact>
-        <Reviews {...reviewsProps} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <AsyncReviews {...reviewsProps} />
+        </Suspense>
       </Route>
     </>
   );

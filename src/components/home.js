@@ -1,31 +1,29 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense, lazy } from 'react';
 import { getTrending } from '../api/fetchMovies';
-import shortid from 'shortid';
-import { useRouteMatch, Link } from 'react-router-dom';
 import Navbar from './navbar';
+import styles from '../styles/home.module.css';
+
+const AsyncMoviesList = lazy(() => import('./moviesList'));
 
 export default function Home() {
-  const { path } = useRouteMatch();
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
     getTrending().then(setMovies).catch(console.log);
   }, []);
-
+  const moviesListProps = {
+    movies: movies,
+    styles: styles,
+  };
   return (
     <>
       <Navbar />
-      <h1>Trending now</h1>
-      <ul>
-        {movies &&
-          movies.map(movie => (
-            <li key={shortid.generate()}>
-              <Link to={`/movies/${movie.id}`}>
-                {movie.original_name || movie.original_title}
-              </Link>
-            </li>
-          ))}
-      </ul>
+      <section className={styles.movies}>
+        <h1 className={styles.main_header}>Trending now</h1>
+      </section>
+      <Suspense fallback={<div>Loading...</div>}>
+        <AsyncMoviesList {...moviesListProps} />
+      </Suspense>
     </>
   );
 }

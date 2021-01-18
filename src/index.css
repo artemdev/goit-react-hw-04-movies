@@ -5,13 +5,30 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #191e2a;
+}
+input:focus,
+textarea:focus,
+select:focus,
+button:focus {
+  outline: none;
 }
 
+ul {
+  list-style-type: none;
+  padding: 40px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
 
-.navigation__active {
-  color: red;
+#root {
+  width: 900px;
+  margin: 0 auto;
 }

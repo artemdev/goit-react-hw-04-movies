@@ -1,0 +1,17 @@
+.reviewsList {
+  background: #1e2634;
+  margin: 0;
+  padding: 20px;
+}
+.reviewsItem {
+  color: white;
+  margin-bottom: 10px;
+  display: flex;
+}
+.reviewsAuthor {
+  background-color: #78909c;
+  margin-right: 20px;
+}
+.font-found {
+  background: red;
+}

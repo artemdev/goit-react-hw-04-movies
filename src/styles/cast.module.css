@@ -1,0 +1,32 @@
+.castList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.castItem {
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  margin-right: 20px;
+  margin-bottom: 10px;
+  padding: 15px;
+  background-color: #1e2634;
+  border-radius: 10px;
+}
+.castItem:hover {
+  background-color: #78909c;
+  cursor: pointer;
+}
+.castName {
+  margin: 0;
+  color: white;
+}
+
+.castImage {
+  margin: 0 auto 15px auto;
+  border-radius: 5px;
+}

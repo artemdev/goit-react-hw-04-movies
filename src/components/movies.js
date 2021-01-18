@@ -1,7 +1,10 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { searchMovie } from '../api/fetchMovies';
-import { Link, useLocation } from 'react-router-dom';
 import Navbar from './navbar';
+import search from '../styles/search.module.css';
+import moviesStyles from '../styles/home.module.css';
+
+const AsyncMoviesList = lazy(() => import('./moviesList'));
 
 export default function Movies({ history, location }) {
   const [movies, setMovies] = useState([]);
@@ -20,38 +23,28 @@ export default function Movies({ history, location }) {
       search: `query=${e.target.query.value}`,
     });
   };
-
+  const moviesListProps = {
+    styles: moviesStyles,
+    movies: movies,
+  };
   return (
     <>
       <Navbar />
-      <form action="" onSubmit={handleQuery}>
+      <form className={search.search} action="" onSubmit={handleQuery}>
         <input
+          className={search.searchField}
           type="text"
           id="query"
-          placeholder="please, enter the movie name"
+          placeholder="Please, enter the movie name"
         />
-        <button type="submit">Search</button>
+        <button className={search.searchButton} type="submit">
+          Search
+        </button>
       </form>
-      <ul>
-        {movies.length > 0 ? (
-          movies.map((movie, index) => (
-            <li key={index}>
-              <Link
-                to={{
-                  pathname: `movies/${movie.id}`,
-                  state: { from: '/movies' },
-                }}
-              >
-                {movie.original_title}
-              </Link>
-            </li>
-          ))
-        ) : (
-          <section>
-            {query === '' ? 'Please enter the movie name' : 'Movies not found'}
-          </section>
-        )}
-      </ul>
+
+      <Suspense fallback={<div>Loading...</div>}>
+        <AsyncMoviesList {...moviesListProps} />
+      </Suspense>
     </>
   );
 }

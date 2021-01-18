@@ -1,11 +1,14 @@
+import castStyles from '../styles/cast.module.css';
+
 export default function Cast({ cast }) {
   return (
-    <ul>
+    <ul className={castStyles.castList}>
       {cast && !!cast.length ? (
         cast.map((actor, i) => (
-          <li key={i}>
+          <li className={castStyles.castItem} key={i}>
             {
               <img
+                className={castStyles.castImage}
                 width="40"
                 src={
                   actor.profile_path
@@ -15,7 +18,7 @@ export default function Cast({ cast }) {
                 alt=""
               />
             }
-            {actor.name}
+            <p className={castStyles.castName}>{actor.name}</p>
           </li>
         ))
       ) : (
